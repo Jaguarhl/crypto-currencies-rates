@@ -9,10 +9,14 @@ import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
+import ru.kartsev.dmitry.cryptorates.common.config.NetworkConfig.REFRESH_DELAY
+import ru.kartsev.dmitry.cryptorates.common.util.round
 import ru.kartsev.dmitry.cryptorates.mvvm.model.entity.CoinsTopEntity
 import ru.kartsev.dmitry.cryptorates.mvvm.model.network.api.CryptoApi
 import ru.kartsev.dmitry.cryptorates.mvvm.observable.baseobservable.CryptoDataBaseObservable
 import timber.log.Timber
+import java.text.DecimalFormat
+import java.util.concurrent.TimeUnit
 
 class CoinsListViewModel : ViewModel(), KoinComponent {
     private val cryptoApi: CryptoApi by inject()
@@ -20,8 +24,18 @@ class CoinsListViewModel : ViewModel(), KoinComponent {
     val coinsLiveData: MutableLiveData<List<CryptoDataBaseObservable>> = MutableLiveData()
 
     fun loadCoinsList(currency: String) {
-        cryptoApi.getCoinsTopList(currency)
-            .map { CryptoDataBaseObservable.fromCoinsTopEntity(it, currency) }
+        cryptoApi.getCoinsTopList(100, currency = currency)
+            .map { data ->
+                data.data.map {
+                CryptoDataBaseObservable(
+                    it.coinInfo.url,
+                    it.coinInfo.imageUrl,
+                    it.coinInfo.name,
+                    it.coinInfo.fullName,
+                    "${it.display?.get(currency)?.toSymbol} ${it.raw?.get(currency)?.price}"
+                )
+            } }
+            .repeatWhen{completed -> completed.delay(REFRESH_DELAY, TimeUnit.SECONDS)}
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : Observer<List<CryptoDataBaseObservable>> {

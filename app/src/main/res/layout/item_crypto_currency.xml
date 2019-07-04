@@ -46,7 +46,7 @@
             app:layout_goneMarginStart="@dimen/primary_horizontal_margin"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/itemCryptoImage"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/itemCryptoPrice"
             tools:text="Bitcoin"/>
 
         <TextView
@@ -61,14 +61,17 @@
 
         <TextView
             android:id="@+id/itemCryptoPrice"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{baseObservable.price}"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:layout_marginEnd="@dimen/primary_horizontal_margin"
             app:layout_goneMarginStart="@dimen/primary_horizontal_margin"
             app:layout_constraintTop_toTopOf="@id/itemCryptoFullName"
+            app:layout_constraintStart_toEndOf="@id/itemCryptoFullName"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="8.5"/>
 

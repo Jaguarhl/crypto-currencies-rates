@@ -3,12 +3,14 @@ package ru.kartsev.dmitry.cryptorates.mvvm.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.standalone.KoinComponent
 import ru.kartsev.dmitry.cryptorates.R
 import ru.kartsev.dmitry.cryptorates.databinding.ItemCryptoCurrencyBinding
 import ru.kartsev.dmitry.cryptorates.mvvm.observable.baseobservable.CryptoDataBaseObservable
 import ru.kartsev.dmitry.cryptorates.mvvm.observable.viewmodel.CoinsListViewModel
+import ru.kartsev.dmitry.cryptorates.mvvm.view.adapter.helper.DefaultDiffCallback
 
 class CryptoListAdapter(
     private val viewModel: CoinsListViewModel
@@ -39,11 +41,15 @@ class CryptoListAdapter(
     }
 
     fun updateItems(list: List<CryptoDataBaseObservable>) {
+        val callback = DefaultDiffCallback(items, list)
+        val result = DiffUtil.calculateDiff(callback)
+
         items.apply {
             clear()
             addAll(list)
         }
-        notifyDataSetChanged()
+
+        result.dispatchUpdatesTo(this)
     }
 
     class ItemCryptoCurrencyViewHolder(
