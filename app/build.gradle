@@ -9,8 +9,8 @@ android {
         applicationId "ru.kartsev.dmitry.cryptorates"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "0.1.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     dataBinding {
@@ -26,7 +26,7 @@ android {
     buildTypes.each {
         Properties properties = new Properties()
         properties.load(project.rootProject.file("local.properties").newDataInputStream())
-        def cryptoApiKey = properties.getProperty("cruptocompare_api_key", "")
+        def cryptoApiKey = properties.getProperty("cryptocompare_api_key", "")
 
         it.buildConfigField 'String', "CRYPTO_API_KEY", cryptoApiKey
 

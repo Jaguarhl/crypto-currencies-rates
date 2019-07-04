@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="item_crypto_currency_icon_size">48dp</dimen>
+    <dimen name="primary_vertical_margin">16dp</dimen>
+    <dimen name="primary_horizontal_margin">16dp</dimen>
+    <dimen name="secondary_horizontal_margin">8dp</dimen>
+    <dimen name="secondary_vertical_margin">8dp</dimen>
+</resources>

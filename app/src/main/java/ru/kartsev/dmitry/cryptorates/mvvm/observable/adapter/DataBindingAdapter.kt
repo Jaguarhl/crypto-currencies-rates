@@ -28,9 +28,7 @@ object DataBindingAdapters : KoinComponent {
         if (uri.isNullOrEmpty()) return
 
         val picasso = get<Picasso>()
-        val creator = picasso.run {
-            if (Patterns.WEB_URL.matcher(uri).matches()) load(uri) else load(File(uri))
-        }
+        val creator = picasso.load(uri)
 
         with(creator) {
             errorPlaceholder?.let {
